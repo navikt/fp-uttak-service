@@ -35,31 +35,39 @@ node {
    }
 
    stage("Build & publish") {
-      try {
-         sh "./gradlew clean test fatJar"
-         slackSend([
-            color: 'good',
-            message: "Build <${env.BUILD_URL}|#${env.BUILD_NUMBER}> (<${commitUrl}|${commitHashShort}>) of ${repo}/${application}@master by ${committer} passed  (${changelog})"
-         ])
-      } catch (Exception ex) {
-         slackSend([
-            color: 'danger',
-            message: "Build <${env.BUILD_URL}|#${env.BUILD_NUMBER}> (<${commitUrl}|${commitHashShort}>) of ${repo}/${application}@master by ${committer} failed (${changelog})"
-         ])
-         echo '[FAILURE] Failed to build: ${ex}'
-         currentBuild.result = 'FAILURE'
-         return
-      } finally {
-         junit '**/target/surefire-reports/*.xml'
-      }
+      withEnv(['HTTPS_PROXY=http://webproxy-utvikler.nav.no:8088',
+               'NO_PROXY=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no',
+               'no_proxy=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no'
+      ]) {
+         System.setProperty("java.net.useSystemProxies", "true")
+         System.setProperty("http.nonProxyHosts", "*.adeo.no")
 
-      sh "docker build --build-arg --build-arg app_name=${application} -t ${dockerRepo}/${application}:${releaseVersion} ."
-      withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexusUser', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-         sh "curl --fail -v -u ${env.USERNAME}:${env.PASSWORD} --upload-file ${appConfig} https://repo.adeo.no/repository/raw/${groupId}/${application}/${releaseVersion}/nais.yaml"
-         sh "docker login -u ${env.USERNAME} -p ${env.PASSWORD} ${dockerRepo} && docker push ${dockerRepo}/${application}:${releaseVersion}"
-      }
+         try {
+            sh "./gradlew clean test fatJar"
+            slackSend([
+               color: 'good',
+               message: "Build <${env.BUILD_URL}|#${env.BUILD_NUMBER}> (<${commitUrl}|${commitHashShort}>) of ${repo}/${application}@master by ${committer} passed  (${changelog})"
+            ])
+         } catch (Exception ex) {
+            slackSend([
+               color: 'danger',
+               message: "Build <${env.BUILD_URL}|#${env.BUILD_NUMBER}> (<${commitUrl}|${commitHashShort}>) of ${repo}/${application}@master by ${committer} failed (${changelog})"
+            ])
+            echo '[FAILURE] Failed to build: ${ex}'
+            currentBuild.result = 'FAILURE'
+            return
+         } finally {
+            junit '**/target/surefire-reports/*.xml'
+         }
 
-      notifyGithub(repo, application, 'continuous-integration/jenkins', commitHash, 'success', "Build #${env.BUILD_NUMBER} has finished")
+         sh "docker build --build-arg --build-arg app_name=${application} -t ${dockerRepo}/${application}:${releaseVersion} ."
+         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexusUser', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+            sh "curl --fail -v -u ${env.USERNAME}:${env.PASSWORD} --upload-file ${appConfig} https://repo.adeo.no/repository/raw/${groupId}/${application}/${releaseVersion}/nais.yaml"
+            sh "docker login -u ${env.USERNAME} -p ${env.PASSWORD} ${dockerRepo} && docker push ${dockerRepo}/${application}:${releaseVersion}"
+         }
+
+         notifyGithub(repo, application, 'continuous-integration/jenkins', commitHash, 'success', "Build #${env.BUILD_NUMBER} has finished")
+      }
    }
 
    stage("Deploy to preprod") {
