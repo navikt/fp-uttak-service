@@ -60,7 +60,7 @@ node {
             junit '**/build/test-results/test/*.xml'
          }
 
-         sh "docker build --build-arg --build-arg app_name=${application} -t ${dockerRepo}/${application}:${releaseVersion} ."
+         sh "docker build --build-arg app_name=${application} -t ${dockerRepo}/${application}:${releaseVersion} ."
          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexusUser', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
             sh "curl --fail -v -u ${env.USERNAME}:${env.PASSWORD} --upload-file ${appConfig} https://repo.adeo.no/repository/raw/${groupId}/${application}/${releaseVersion}/nais.yaml"
             sh "docker login -u ${env.USERNAME} -p ${env.PASSWORD} ${dockerRepo} && docker push ${dockerRepo}/${application}:${releaseVersion}"
