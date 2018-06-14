@@ -9,7 +9,7 @@ val mainClass = "no.nav.foreldrepenger.RunnerKt"
 
 plugins {
    application
-   kotlin("jvm") version "1.2.41"
+   kotlin("jvm") version "1.2.50"
 }
 
 buildscript {
