@@ -57,7 +57,7 @@ node {
             currentBuild.result = 'FAILURE'
             return
          } finally {
-            junit '**/target/surefire-reports/*.xml'
+            junit '**/build/test-results/test/*.xml'
          }
 
          sh "docker build --build-arg --build-arg app_name=${application} -t ${dockerRepo}/${application}:${releaseVersion} ."
