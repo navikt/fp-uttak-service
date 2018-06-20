@@ -7,7 +7,7 @@ val slf4jVersion = "1.8.0-beta2"
 val jacksonVersion = "2.9.6"
 val ruleVersion = "1.2_20180619154707_314b3c2"
 
-val mainClass = "no.nav.foreldrepenger.RunnerKt"
+val mainClass = "no.nav.foreldrepenger.AppKt"
 
 plugins {
    application
