@@ -32,7 +32,7 @@ object KontoParamValidator {
 
       val morHarAleneomsorg = req.getParameter("morHarAleneomsorg").orEmpty().toBoolean()
       val farHarAleneomsorg = req.getParameter("farHarAleneomsorg").orEmpty().toBoolean()
-      if (morHarAleneomsorg.and(farHarAleneomsorg)) {
+      if (morHarAleneomsorg and farHarAleneomsorg) {
          errMsgs.add("morHarAleneomsorg and farHarAleneomsorg are mutually exclusive, both can't be true")
       }
 

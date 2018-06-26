@@ -21,8 +21,6 @@ sealed class KontoResponse
 data class KontoSuccess(val kontoer: Map<String, Int>): KontoResponse()
 data class KontoFailure(val errors: List<String>): KontoResponse()
 
-
-
 sealed class ParseResult
 data class ParseSuccess(val request: CalculateKontoRequest): ParseResult()
 data class ParseFailure(val errors: List<String>): ParseResult()

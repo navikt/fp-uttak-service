@@ -5,7 +5,7 @@ val khttpVersion = "0.1.0"
 val javalinVersion = "1.7.0"
 val slf4jVersion = "1.8.0-beta2"
 val jacksonVersion = "2.9.6"
-val ruleVersion = "1.2_20180619154707_314b3c2"
+val ruleVersion = "1.2_20180625112508_f94f902"
 
 val mainClass = "no.nav.foreldrepenger.AppKt"
 
@@ -29,7 +29,7 @@ dependencies {
    compile("io.javalin:javalin:$javalinVersion")
    compile("org.slf4j:slf4j-simple:$slf4jVersion")
    compile("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-//   compile("no.nav.foreldrepenger:uttak-regler:$ruleVersion")
+   compile("no.nav.foreldrepenger:uttak-regler:$ruleVersion")
 
    testCompile("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
    testCompile("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")

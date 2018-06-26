@@ -13,7 +13,7 @@ class App(private val port: Int = 7070) {
    fun init(): Javalin {
       val log = LoggerFactory.getLogger("runner")
 
-      val app = Javalin.create().apply {
+      return Javalin.create().apply {
          port(port)
          enableDynamicGzip()
          exception(Exception::class.java) { ex, ctx ->
@@ -21,9 +21,7 @@ class App(private val port: Int = 7070) {
             ctx.status(500)
          }
          error(404) { ctx -> ctx.json("${ctx.url()} not found") }
-      }.start()
-
-      app.routes {
+      }.routes {
          path("/konto") {
             get(KontoController::calculateKonto)
          }
@@ -35,13 +33,10 @@ class App(private val port: Int = 7070) {
          path("/isReady") {
             get { it.status(200) }
          }
-      }
-
-      app.after {
+      }.after {
          it.header("Server", "WebBuster 3000")
-      }
+      }.start()
 
-      return app
    }
 
 }
