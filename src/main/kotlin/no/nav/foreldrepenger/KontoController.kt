@@ -10,11 +10,11 @@ object KontoController {
 
    fun calculateKonto(ctx: Context) {
 
-      val missingParams = KontoParamValidator.missingRequiredParams(ctx.request().parameterNames.toList())
+      val missingParams = KontoParamParser.missingRequiredParams(ctx.request().parameterNames.toList())
       if (missingParams.isNotEmpty()) {
          ctx.status(400).json(KontoFailure(missingParams.map { "parameter $it is missing" }))
       } else {
-         val parseResult = KontoParamValidator.parseParams(ctx.request())
+         val parseResult = KontoParamParser.parseParams(ctx.request())
          when (parseResult) {
             is ParseFailure -> ctx.status(400).json(KontoFailure(parseResult.errors))
             is ParseSuccess -> ctx.json(calculate(parseResult.request))
@@ -40,7 +40,8 @@ object KontoController {
          .build()
 
       return try {
-         KontoSuccess(kontoCalculator.beregnKontoer(grunnlag).stønadskontoer
+         KontoSuccess(kontoCalculator.beregnKontoer(grunnlag)
+            .stønadskontoer
             .map { it.key.toString() to it.value }.toMap())
       } catch (ex: Exception) {
          KontoFailure(listOf(ex.message ?: "unknown error"))

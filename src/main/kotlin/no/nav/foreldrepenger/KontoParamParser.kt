@@ -4,23 +4,21 @@ import java.time.*
 import java.time.format.*
 import javax.servlet.http.*
 
-object KontoParamValidator {
+object KontoParamParser {
 
-   private val params = mapOf("erFødsel" to true,
-      "antallBarn" to true,
-      "morHarRett" to true,
-      "farHarRett" to true,
-      "familiehendelsesdato" to true,
-      "dekningsgrad" to true,
-      "morHarAleneomsorg" to false,
-      "farHarAleneomsorg" to false)
+   private val reqiuredParams = listOf(
+      "erFødsel",
+      "antallBarn",
+      "morHarRett",
+      "farHarRett",
+      "familiehendelsesdato",
+      "dekningsgrad"
+   )
 
    private val dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
 
    fun missingRequiredParams(paramsInRequest: List<String>): List<String> {
-      return params.filter { it.value == true }
-         .map { it.key }
-         .filterNot { paramsInRequest.contains(it) }
+      return reqiuredParams.filterNot { paramsInRequest.contains(it) }
    }
 
    fun parseParams(req: HttpServletRequest): ParseResult {
@@ -36,39 +34,39 @@ object KontoParamValidator {
          errMsgs.add("morHarAleneomsorg and farHarAleneomsorg are mutually exclusive, both can't be true")
       }
 
-      val antallBarn = int(req, "antallBarn", errMsgs)
-      val dekningsgrad = dekningsgrad(req, errMsgs)
+      val antallBarn = int(req.getParameter("antallBarn"), errMsgs)
+      val dekningsgrad = dekningsgrad(req.getParameter("dekningsgrad"), errMsgs)
 
-      val familiehendelsesdato = date(req, "familiehendelsesdato", errMsgs)
+      val familiehendelsesdato = date(req.getParameter("familiehendelsesdato"), errMsgs)
 
       return when (errMsgs.isEmpty()) {
-         true -> ParseSuccess(CalculateKontoRequest(erFødsel = erFødsel, dekningsgrad = dekningsgrad!!,
+         false -> ParseFailure(errMsgs)
+         true  -> ParseSuccess(CalculateKontoRequest(erFødsel = erFødsel, dekningsgrad = dekningsgrad!!,
             familiehendelsesdato = familiehendelsesdato!!, farHarRett = farHarRett, morHarRett = morHarRett,
             antallBarn = antallBarn!!, farHarAleneomsorg = farHarAleneomsorg, morHarAleneomsorg = morHarAleneomsorg))
-         false -> ParseFailure(errMsgs)
       }
    }
 
-   private fun int(req: HttpServletRequest, paramName: String, errMsgs: MutableList<String>): Int? {
+   private fun int(param: String?, errMsgs: MutableList<String>): Int? {
       return try {
-         req.getParameter(paramName).orEmpty().toInt()
-      } catch (ex: Exception) {
-         errMsgs.add("$paramName is not an integer")
+         param.orEmpty().toInt()
+      } catch (ex: NumberFormatException) {
+         errMsgs.add("$param is not an integer")
          null
       }
    }
 
-   private fun date(req: HttpServletRequest, paramName: String, errMsgs: MutableList<String>): LocalDate? {
+   private fun date(param: String?, errMsgs: MutableList<String>): LocalDate? {
       return try {
-         LocalDate.parse(req.getParameter(paramName).orEmpty(), dateFormatter)
-      } catch (ex: Exception) {
-         errMsgs.add("$paramName is not a valid date with format yyyyMMdd")
+         LocalDate.parse(param.orEmpty(), dateFormatter)
+      } catch (ex: DateTimeParseException) {
+         errMsgs.add("$param is not a valid date with format yyyyMMdd")
          null
       }
    }
 
-   private fun dekningsgrad(req: HttpServletRequest, errMsgs: MutableList<String>): Dekningsgrad? {
-      return int(req, "dekningsgrad", errMsgs)?.let {
+   private fun dekningsgrad(param: String?, errMsgs: MutableList<String>): Dekningsgrad? {
+      return int(param, errMsgs)?.let {
          when (it) {
             80 -> Dekningsgrad.DEKNING_80
             100 -> Dekningsgrad.DEKNING_100
