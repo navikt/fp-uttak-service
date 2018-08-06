@@ -10,11 +10,11 @@ object KontoController {
 
    fun calculateKonto(ctx: Context) {
 
-      val missingParams = KontoParamParser.missingRequiredParams(ctx.request().parameterNames.toList())
+      val missingParams = KontoParamParser.missingRequiredParams(ctx.req.parameterNames.toList())
       if (missingParams.isNotEmpty()) {
          ctx.status(400).json(KontoFailure(missingParams.map { "parameter $it is missing" }))
       } else {
-         val parseResult = KontoParamParser.parseParams(ctx.request())
+         val parseResult = KontoParamParser.parseParams(ctx.req)
          when (parseResult) {
             is ParseFailure -> ctx.status(400).json(KontoFailure(parseResult.errors))
             is ParseSuccess -> ctx.json(calculate(parseResult.request))

@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger
 
 import io.javalin.*
-import io.javalin.ApiBuilder.*
+import io.javalin.apibuilder.ApiBuilder.*
 import org.slf4j.*
 
 fun main(args: Array<String>) {
@@ -15,7 +15,7 @@ class App(private val port: Int = 7070) {
 
       return Javalin.create().apply {
          port(port)
-         enableDynamicGzip()
+         enableCaseSensitiveUrls()
          exception(Exception::class.java) { ex, ctx ->
             log.warn("An error occuredd", ex)
             ctx.status(500)
