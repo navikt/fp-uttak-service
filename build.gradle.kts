@@ -11,7 +11,7 @@ val mainClass = "no.nav.foreldrepenger.AppKt"
 
 plugins {
    application
-   kotlin("jvm") version "1.2.50"
+   kotlin("jvm") version "1.2.60"
 }
 
 buildscript {
@@ -64,7 +64,7 @@ tasks.withType<Test> {
 }
 
 tasks.withType<Wrapper> {
-   gradleVersion = "4.8"
+   gradleVersion = "4.9"
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
