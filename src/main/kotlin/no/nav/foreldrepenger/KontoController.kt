@@ -28,16 +28,16 @@ object KontoController {
          Dekningsgrad.DEKNING_80 -> no.nav.foreldrepenger.regler.uttak.beregnkontoer.grunnlag.Dekningsgrad.DEKNINGSGRAD_80
       }
 
-      val grunnlag = BeregnKontoerGrunnlag.builder()
-         .medFamiliehendelsesdato(req.familiehendelsesdato)
-         .medAntallBarn(req.antallBarn)
-         .erFødsel(req.erFødsel)
-         .morRett(req.morHarRett)
-         .farRett(req.farHarRett)
-         .farAleneomsorg(req.farHarAleneomsorg)
-         .morAleneomsorg(req.morHarAleneomsorg)
-         .medDekningsgrad(dekningsgrad)
-         .build()
+      val grunnlag = grunnlag {
+         medFamiliehendelsesdato(req.familiehendelsesdato)
+         medAntallBarn(req.antallBarn)
+         erFødsel(req.erFødsel)
+         morRett(req.morHarRett)
+         farRett(req.farHarRett)
+         farAleneomsorg(req.farHarAleneomsorg)
+         morAleneomsorg(req.morHarAleneomsorg)
+         medDekningsgrad(dekningsgrad)
+      }
 
       return try {
          KontoSuccess(kontoCalculator.beregnKontoer(grunnlag)
@@ -46,6 +46,12 @@ object KontoController {
       } catch (ex: Exception) {
          KontoFailure(listOf(ex.message ?: "unknown error"))
       }
+   }
+
+   private fun grunnlag(actions: BeregnKontoerGrunnlag.Builder.() -> Unit): BeregnKontoerGrunnlag {
+      val builder = BeregnKontoerGrunnlag.builder()
+      builder.actions()
+      return builder.build()
    }
 
 }
