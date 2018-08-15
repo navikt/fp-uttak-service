@@ -3,7 +3,7 @@ val spekVersion = "1.1.5"
 val kluentVersion = "1.38"
 val khttpVersion = "0.1.0"
 val javalinVersion = "2.0.0.RC3"
-val slf4jVersion = "1.8.0-beta2"
+val slf4jVersion = "1.7.25"
 val jacksonVersion = "2.9.6"
 val ruleVersion = "1.2_20180628152037_b76a72a"
 

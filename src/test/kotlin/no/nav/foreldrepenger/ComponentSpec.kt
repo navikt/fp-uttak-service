@@ -9,7 +9,7 @@ import org.jetbrains.spek.api.dsl.*
 object ComponentSpec : Spek({
 
    lateinit var app: Javalin
-   val url = "http://localhost:7070/"
+   val url = "http://localhost:8080/"
 
    describe("Integration tests") {
 

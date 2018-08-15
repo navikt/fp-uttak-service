@@ -8,7 +8,7 @@ fun main(args: Array<String>) {
    App().init()
 }
 
-class App(private val port: Int = 7070) {
+class App(private val port: Int = 8080) {
 
    fun init(): Javalin {
       val log = LoggerFactory.getLogger("runner")

@@ -6,7 +6,7 @@ replicas:
     cpuThresholdPercentage: 50
 prometheus:
     enabled: false
-port: 7070
+port: 8080
 healthcheck:
     liveness:
       initialDelay: 60
