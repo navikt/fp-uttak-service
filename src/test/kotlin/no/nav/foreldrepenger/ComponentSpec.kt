@@ -9,12 +9,12 @@ import org.jetbrains.spek.api.dsl.*
 object ComponentSpec : Spek({
 
    lateinit var app: Javalin
-   val url = "http://localhost:8080/"
+   val url = "http://localhost:7070/"
 
    describe("Integration tests") {
 
       beforeGroup {
-         app = App().init()
+         app = App(7070).init()
       }
 
       afterGroup {
