@@ -35,6 +35,7 @@ class App(private val port: Int = 8080) {
          }
       }.after {
          it.header("Server", "WebBuster 3000")
+         charset("utf-8")
       }.start()
 
    }
