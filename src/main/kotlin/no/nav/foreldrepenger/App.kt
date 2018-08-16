@@ -16,6 +16,7 @@ class App(private val port: Int = 8080) {
       return Javalin.create().apply {
          port(port)
          enableCaseSensitiveUrls()
+         defaultContentType("application/json; charset=utf-8")
          exception(Exception::class.java) { ex, ctx ->
             log.warn("An error occuredd", ex)
             ctx.status(500)
