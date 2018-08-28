@@ -6,7 +6,7 @@ import no.nav.foreldrepenger.uttaksvilkår.*
 
 object KontoController {
 
-   val kontoCalculator = StønadskontoRegelOrkestrering()
+   private val kontoCalculator = StønadskontoRegelOrkestrering()
 
    fun calculateKonto(ctx: Context) {
 
