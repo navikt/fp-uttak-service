@@ -1,9 +1,9 @@
 val junitJupiterVersion = "5.2.0"
 val spekVersion = "1.1.5"
-val kluentVersion = "1.38"
+val kluentVersion = "1.41"
 val khttpVersion = "0.1.0"
 val javalinVersion = "2.0.0"
-val slf4jVersion = "1.7.25"
+val slf4jVersion = "1.8.0-beta2"
 val jacksonVersion = "2.9.6"
 val ruleVersion = "1.2_20180822143614_1af7579"
 
@@ -11,7 +11,7 @@ val mainClass = "no.nav.foreldrepenger.AppKt"
 
 plugins {
    application
-   kotlin("jvm") version "1.2.60"
+   kotlin("jvm") version "1.2.61"
 }
 
 buildscript {
