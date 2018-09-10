@@ -1,4 +1,4 @@
-FROM navikt/java:9
+FROM navikt/java:10
 
 ARG app_name
 
