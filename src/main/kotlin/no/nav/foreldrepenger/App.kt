@@ -36,6 +36,7 @@ class App(private val port: Int = 8080) {
          }
       }.after {
          it.header("Server", "WebBuster 3000")
+         it.header("Access-Control-Allow-Origin", "*")
          charset("utf-8")
       }.start()
 
