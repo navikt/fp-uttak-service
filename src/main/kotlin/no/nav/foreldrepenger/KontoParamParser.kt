@@ -7,7 +7,7 @@ import javax.servlet.http.*
 object KontoParamParser {
 
    private val reqiuredParams = listOf(
-      "erFødsel",
+      "erFodsel",
       "antallBarn",
       "morHarRett",
       "farHarRett",
@@ -24,7 +24,7 @@ object KontoParamParser {
    fun parseParams(req: HttpServletRequest): ParseResult {
       val errMsgs = mutableListOf<String>()
 
-      val erFødsel = req.getParameter("erFødsel").orEmpty().toBoolean()
+      val erFødsel = req.getParameter("erFodsel").orEmpty().toBoolean()
       val morHarRett = req.getParameter("morHarRett").orEmpty().toBoolean()
       val farHarRett = req.getParameter("farHarRett").orEmpty().toBoolean()
 
