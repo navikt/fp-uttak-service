@@ -33,8 +33,8 @@ object KontoController {
          medAntallBarn(req.antallBarn)
          erFødsel(req.erFødsel)
 
-         morRett(booleanToRettighetVurdering(req.morHarRett))
-         farRett(booleanToRettighetVurdering(req.farHarRett))
+         morRett(req.morHarRett)
+         farRett(req.farHarRett)
          farAleneomsorg(req.farHarAleneomsorg)
          morAleneomsorg(req.morHarAleneomsorg)
          medDekningsgrad(dekningsgrad)
@@ -54,8 +54,5 @@ object KontoController {
       builder.actions()
       return builder.build()
    }
-
-   private fun booleanToRettighetVurdering(bool: Boolean) =
-      if (bool) BeregnKontoerGrunnlag.RettighetVurdering.JA else BeregnKontoerGrunnlag.RettighetVurdering.NEI
 
 }
