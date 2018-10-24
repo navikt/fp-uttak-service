@@ -13,7 +13,7 @@ healthcheck:
       path: isAlive
     readiness:
       initialDelay: 60
-      path:  isReady
+      path: isReady
 resources:
     limits:
       cpu: 1500m
@@ -23,6 +23,6 @@ resources:
       memory: 1536Mi
 fasitResources:
     exposed:
-    - alias: fp-uttak-service
-      resourceType: restservice
-      path: /
+    - alias: loadbalancer:fp-uttak-service
+      resourceType: loadbalancerconfig
+
