@@ -22,7 +22,7 @@ resources:
       cpu: 250m
       memory: 1536Mi
 fasitResources:
-    exposed:
+    used:
     - alias: loadbalancer:fp-uttak-service
       resourceType: loadbalancerconfig
 
