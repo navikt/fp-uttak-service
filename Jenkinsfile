@@ -107,6 +107,41 @@ node {
       }
    }
 
+   stage("Deploy to prod") {
+      withEnv(['HTTPS_PROXY=http://webproxy-internett.nav.no:8088',
+               'NO_PROXY=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no',
+               'no_proxy=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no'
+      ]) {
+
+         try {
+            timeout(time: 5, unit: 'MINUTES') {
+               input id: 'prod', message: "Deploy to prod?"
+            }
+         } catch (Exception ex) {
+            echo "Timeout, will not deploy to prod"
+            currentBuild.result = 'SUCCESS'
+            return
+         }
+
+         callback = "${env.BUILD_URL}input/Deploy/"
+         def deploy = deployLib.deployNaisApp(application, releaseVersion, 'p', zone, namespace, callback, committer, false).key
+         try {
+            timeout(time: 15, unit: 'MINUTES') {
+               input id: 'deploy', message: "Check status here:  https://jira.adeo.no/browse/${deploy}"
+            }
+            slackSend([
+               color: 'good',
+               message: "${application} version ${releaseVersion} has been deployed to production."
+            ])
+         } catch (Exception e) {
+            slackSend([
+               color: 'danger',
+               message: "Build ${releaseVersion} of ${application} could not be deployed to production"
+            ])
+            throw new Exception("Deploy feilet :( \n Se https://jira.adeo.no/browse/" + deploy + " for detaljer", e)
+         }
+      }
+   }
 
 }
 
