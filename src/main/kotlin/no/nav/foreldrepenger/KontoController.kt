@@ -45,7 +45,8 @@ object KontoController {
       return try {
          KontoSuccess(kontoCalculator.beregnKontoer(grunnlag, konfig(grunnlag.familiehendelsesdato))
             .stønadskontoer
-            .map { it.key.toString() to it.value }.toMap())
+            .map { it.key.toString() to it.value }.toMap()
+         )
       } catch (ex: Exception) {
          KontoFailure(listOf(ex.message ?: "unknown error"))
       }
@@ -58,13 +59,13 @@ object KontoController {
    }
 
    private fun konfig(familiehendelsesdato: LocalDate): Konfigurasjon {
-      return when (isWithinRange(familiehendelsesdato)) {
+      return when (isWithinOldLawRange(familiehendelsesdato)) {
          true -> StandardKonfigurasjon.SØKNADSDIALOG
-         false -> StandardKonfigurasjon.KONFIGURASJON
+         else -> StandardKonfigurasjon.KONFIGURASJON
       }
    }
 
-   fun isWithinRange(testDate: LocalDate): Boolean {
+   fun isWithinOldLawRange(testDate: LocalDate): Boolean {
       val start = LocalDate.of(2018, 7, 1)
       val end = LocalDate.of(2018, 12, 31)
       return !(testDate.isBefore(start) || testDate.isAfter(end))
