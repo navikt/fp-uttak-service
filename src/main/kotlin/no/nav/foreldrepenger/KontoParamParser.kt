@@ -39,7 +39,7 @@ object KontoParamParser {
 
       val familiehendelsesdato = date(req.getParameter("familiehendelsesdato"), errMsgs)
       val startDatoUttak = req.getParameter("startdatoUttak")?.let {
-         date(req.getParameter(it), errMsgs)
+         date(it, errMsgs)
       }
 
       return when (errMsgs.isEmpty()) {
