@@ -2,7 +2,9 @@ package no.nav.foreldrepenger
 
 import io.javalin.*
 import no.nav.foreldrepenger.regler.uttak.beregnkontoer.grunnlag.*
+import no.nav.foreldrepenger.regler.uttak.konfig.*
 import no.nav.foreldrepenger.uttaksvilkår.*
+import java.time.*
 
 object KontoController {
 
@@ -41,7 +43,7 @@ object KontoController {
       }
 
       return try {
-         KontoSuccess(kontoCalculator.beregnKontoer(grunnlag)
+         KontoSuccess(kontoCalculator.beregnKontoer(grunnlag, konfig(grunnlag.familiehendelsesdato))
             .stønadskontoer
             .map { it.key.toString() to it.value }.toMap())
       } catch (ex: Exception) {
@@ -53,6 +55,19 @@ object KontoController {
       val builder = BeregnKontoerGrunnlag.builder()
       builder.actions()
       return builder.build()
+   }
+
+   private fun konfig(familiehendelsesdato: LocalDate): Konfigurasjon {
+      return when (isWithinRange(familiehendelsesdato)) {
+         true -> StandardKonfigurasjon.SØKNADSDIALOG
+         false -> StandardKonfigurasjon.KONFIGURASJON
+      }
+   }
+
+   fun isWithinRange(testDate: LocalDate): Boolean {
+      val start = LocalDate.of(2018, 7, 1)
+      val end = LocalDate.of(2018, 12, 31)
+      return !(testDate.isBefore(start) || testDate.isAfter(end))
    }
 
 }
