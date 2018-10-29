@@ -14,6 +14,7 @@ data class CalculateKontoRequest(
    val morHarAleneomsorg: Boolean = false,
    val farHarAleneomsorg: Boolean = false,
    val familiehendelsesdato: LocalDate,
+   val startdatoUttak: LocalDate?,
    val dekningsgrad: Dekningsgrad
 )
 

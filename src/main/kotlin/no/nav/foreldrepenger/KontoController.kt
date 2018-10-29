@@ -6,6 +6,9 @@ import no.nav.foreldrepenger.regler.uttak.konfig.*
 import no.nav.foreldrepenger.uttaksvilkår.*
 import java.time.*
 
+import no.nav.foreldrepenger.regler.uttak.konfig.StandardKonfigurasjon.SØKNADSDIALOG as OLD_LAW_CONFIG
+import no.nav.foreldrepenger.regler.uttak.konfig.StandardKonfigurasjon.KONFIGURASJON as NEW_LAW_CONFIG
+
 object KontoController {
 
    private val kontoCalculator = StønadskontoRegelOrkestrering()
@@ -43,7 +46,7 @@ object KontoController {
       }
 
       return try {
-         KontoSuccess(kontoCalculator.beregnKontoer(grunnlag, konfig(grunnlag.familiehendelsesdato))
+         KontoSuccess(kontoCalculator.beregnKontoer(grunnlag, chooseConfig(grunnlag.familiehendelsesdato, req.startdatoUttak))
             .stønadskontoer
             .map { it.key.toString() to it.value }.toMap()
          )
@@ -58,17 +61,14 @@ object KontoController {
       return builder.build()
    }
 
-   private fun konfig(familiehendelsesdato: LocalDate): Konfigurasjon {
-      return when (isWithinOldLawRange(familiehendelsesdato)) {
-         true -> StandardKonfigurasjon.SØKNADSDIALOG
-         else -> StandardKonfigurasjon.KONFIGURASJON
-      }
+   fun chooseConfig(familiehendelsesdato: LocalDate, startdatoUttak: LocalDate?): Konfigurasjon {
+      val significantDate = startdatoUttak ?: familiehendelsesdato
+      return if (oldLawApplies(significantDate)) OLD_LAW_CONFIG else NEW_LAW_CONFIG
    }
 
-   fun isWithinOldLawRange(testDate: LocalDate): Boolean {
-      val start = LocalDate.of(2018, 7, 1)
-      val end = LocalDate.of(2018, 12, 31)
-      return !(testDate.isBefore(start) || testDate.isAfter(end))
+   fun oldLawApplies(testDate: LocalDate): Boolean {
+      val cutoff = LocalDate.of(2019, 1, 1)
+      return testDate.isBefore(cutoff)
    }
 
 }

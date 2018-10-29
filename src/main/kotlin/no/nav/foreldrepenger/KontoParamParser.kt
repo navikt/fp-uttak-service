@@ -38,12 +38,16 @@ object KontoParamParser {
       val dekningsgrad = dekningsgrad(req.getParameter("dekningsgrad"), errMsgs)
 
       val familiehendelsesdato = date(req.getParameter("familiehendelsesdato"), errMsgs)
+      val startDatoUttak = req.getParameter("startdatoUttak")?.let {
+         date(req.getParameter(it), errMsgs)
+      }
 
       return when (errMsgs.isEmpty()) {
          false -> ParseFailure(errMsgs)
          true  -> ParseSuccess(CalculateKontoRequest(erFødsel = erFødsel, dekningsgrad = dekningsgrad!!,
-            familiehendelsesdato = familiehendelsesdato!!, farHarRett = farHarRett, morHarRett = morHarRett,
-            antallBarn = antallBarn!!, farHarAleneomsorg = farHarAleneomsorg, morHarAleneomsorg = morHarAleneomsorg))
+            familiehendelsesdato = familiehendelsesdato!!, startdatoUttak = startDatoUttak,
+            farHarRett = farHarRett, morHarRett = morHarRett, antallBarn = antallBarn!!,
+            farHarAleneomsorg = farHarAleneomsorg, morHarAleneomsorg = morHarAleneomsorg))
       }
    }
 
