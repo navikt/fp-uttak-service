@@ -33,8 +33,11 @@ object KontoController {
          Dekningsgrad.DEKNING_80 -> no.nav.foreldrepenger.regler.uttak.beregnkontoer.grunnlag.Dekningsgrad.DEKNINGSGRAD_80
       }
 
+      val significantDate = req.startdatoUttak ?: req.familiehendelsesdato
+      val config = chooseConfig(significantDate)
+
       val grunnlag = grunnlag {
-         medFamiliehendelsesdato(req.familiehendelsesdato)
+         medFamiliehendelsesdato(significantDate)
          medAntallBarn(req.antallBarn)
          erFødsel(req.erFødsel)
 
@@ -46,7 +49,7 @@ object KontoController {
       }
 
       return try {
-         KontoSuccess(kontoCalculator.beregnKontoer(grunnlag, chooseConfig(grunnlag.familiehendelsesdato, req.startdatoUttak))
+         KontoSuccess(kontoCalculator.beregnKontoer(grunnlag, config)
             .stønadskontoer
             .map { it.key.toString() to it.value }.toMap()
          )
@@ -61,8 +64,7 @@ object KontoController {
       return builder.build()
    }
 
-   fun chooseConfig(familiehendelsesdato: LocalDate, startdatoUttak: LocalDate?): Konfigurasjon {
-      val significantDate = startdatoUttak ?: familiehendelsesdato
+   fun chooseConfig(significantDate: LocalDate): Konfigurasjon {
       return if (oldLawApplies(significantDate)) OLD_LAW_CONFIG else NEW_LAW_CONFIG
    }
 

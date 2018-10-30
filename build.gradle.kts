@@ -11,7 +11,7 @@ val mainClass = "no.nav.foreldrepenger.AppKt"
 
 plugins {
    application
-   kotlin("jvm") version "1.3.0"
+   kotlin("jvm") version "1.2.71"
 }
 
 buildscript {
