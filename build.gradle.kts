@@ -5,7 +5,7 @@ val khttpVersion = "0.1.0"
 val javalinVersion = "2.3.0"
 val slf4jVersion = "1.7.25"
 val jacksonVersion = "2.9.7"
-val ruleVersion = "1.2_20181029123420_beba7f4"
+val ruleVersion = "1.2_20190315121903_c7aa623"
 
 val mainClass = "no.nav.foreldrepenger.AppKt"
 
