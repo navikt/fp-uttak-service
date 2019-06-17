@@ -79,7 +79,7 @@ object ComponentSpec : Spek({
 
       given ("missing required query params") {
          it("rejects the request") {
-            val queryParams = "&antallBarn=1&morHarRett=true&farHarRett=true&gfodselsdato=20180620"
+            val queryParams = "&antallBarn=1&morHarRett=true&farHarRett=true&fodselsdato=20180620"
             val response = khttp.get(url = url + "konto?$queryParams")
             response.statusCode `should equal` 400
             response.text `should contain` "parameter dekningsgrad is missing"
