@@ -70,7 +70,7 @@ object KontoController {
 
    fun oldLawApplies(testDate: LocalDate?): Boolean {
       val cutoff = LocalDate.of(2019, 1, 1)
-      return testDate.isBefore(cutoff)
+      return testDate!!.isBefore(cutoff)
    }
 
 }
