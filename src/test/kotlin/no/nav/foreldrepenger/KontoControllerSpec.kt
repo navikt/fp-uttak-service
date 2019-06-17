@@ -18,7 +18,7 @@ object KontoControllerSpec : Spek({
             it("chooses the old law") {
                val familiehendelsesdato = LocalDate.of(2019, 1, 1)
                val startdatoUttak = LocalDate.of(2018, 12, 31)
-               val chosenLaw = KontoController.chooseConfig(startdatoUttak ?: familiehendelsesdato)
+               val chosenLaw = KontoController.chooseConfig((startdatoUttak ?: familiehendelsesdato) as LocalDate?)
                chosenLaw `should equal` OLD_LAW
             }
          }
@@ -27,7 +27,7 @@ object KontoControllerSpec : Spek({
             it("chooses the new law") {
                val familiehendelsesdato = LocalDate.of(2018, 12, 31)
                val startdatoUttak = LocalDate.of(2019, 1, 1)
-               val chosenLaw = KontoController.chooseConfig(startdatoUttak ?: familiehendelsesdato)
+               val chosenLaw = KontoController.chooseConfig((startdatoUttak ?: familiehendelsesdato)) as LocalDate?)
                chosenLaw `should equal` NEW_LAW
             }
          }
@@ -37,7 +37,7 @@ object KontoControllerSpec : Spek({
          on("familiehendelsesdato is before jan 1 2019") {
             it("chooses the old law") {
                val familiehendelsesdato = LocalDate.of(2018, 12, 31)
-               val chosenLaw = KontoController.chooseConfig(familiehendelsesdato)
+               val chosenLaw = KontoController.chooseConfig((familiehendelsesdato)) as LocalDate?)
                chosenLaw `should equal` OLD_LAW
             }
          }
@@ -45,7 +45,7 @@ object KontoControllerSpec : Spek({
          on("familiehendelsesdato is after jan 1 2019") {
             it("chooses the new law") {
                val familiehendelsesdato = LocalDate.of(2019, 1, 1)
-               val chosenLaw = KontoController.chooseConfig(familiehendelsesdato)
+               val chosenLaw = KontoController.chooseConfig((familiehendelsesdato)) as LocalDate?)
                chosenLaw `should equal` NEW_LAW
             }
          }
