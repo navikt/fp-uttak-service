@@ -32,14 +32,14 @@ object KontoController {
          Dekningsgrad.DEKNING_100 -> no.nav.foreldrepenger.regler.uttak.beregnkontoer.grunnlag.Dekningsgrad.DEKNINGSGRAD_100
          Dekningsgrad.DEKNING_80 -> no.nav.foreldrepenger.regler.uttak.beregnkontoer.grunnlag.Dekningsgrad.DEKNINGSGRAD_80
       }
-
-      val significantDate = req.startdatoUttak ?: req.familiehendelsesdato
+      
       val config = chooseConfig(significantDate)
 
       val grunnlag = grunnlag {
-         medFamiliehendelsesdato(significantDate)
+         medFødselsdato(req.fødselsdato)
+         medTermindato(req.termindato)
+         medOmsorgsovertakelseDato(req.omsorgsovertakelseDato)
          medAntallBarn(req.antallBarn)
-         erFødsel(req.erFødsel)
 
          morRett(req.morHarRett)
          farRett(req.farHarRett)

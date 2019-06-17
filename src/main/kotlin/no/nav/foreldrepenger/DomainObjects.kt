@@ -7,13 +7,14 @@ enum class Dekningsgrad {
 }
 
 data class CalculateKontoRequest(
-   val erFødsel: Boolean,
    val antallBarn: Int,
    val morHarRett: Boolean,
    val farHarRett: Boolean,
    val morHarAleneomsorg: Boolean = false,
    val farHarAleneomsorg: Boolean = false,
-   val familiehendelsesdato: LocalDate,
+   val fødselsdato: LocalDate?,
+   val termindato: LocalDate?,
+   val omsorgsovertakelseDato: LocalDate?,
    val startdatoUttak: LocalDate?,
    val dekningsgrad: Dekningsgrad
 )
