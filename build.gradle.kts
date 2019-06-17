@@ -56,13 +56,6 @@ java {
    targetCompatibility = JavaVersion.VERSION_1_10
 }
 
-tasks.withType<Test> {
-   useJUnitPlatform()
-   testLogging {
-      events("passed", "skipped", "failed")
-   }
-}
-
 tasks.withType<Wrapper> {
    gradleVersion = "4.10.2"
 }
