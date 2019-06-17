@@ -64,11 +64,11 @@ object KontoController {
       return builder.build()
    }
 
-   fun chooseConfig(significantDate: LocalDate): Konfigurasjon {
+   fun chooseConfig(significantDate: LocalDate?): Konfigurasjon {
       return if (oldLawApplies(significantDate)) OLD_LAW_CONFIG else NEW_LAW_CONFIG
    }
 
-   fun oldLawApplies(testDate: LocalDate): Boolean {
+   fun oldLawApplies(testDate: LocalDate?): Boolean {
       val cutoff = LocalDate.of(2019, 1, 1)
       return testDate.isBefore(cutoff)
    }
