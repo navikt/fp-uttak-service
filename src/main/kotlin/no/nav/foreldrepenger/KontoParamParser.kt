@@ -6,25 +6,22 @@ import javax.servlet.http.*
 
 object KontoParamParser {
 
-   private val reqiuredParams = listOf(
-      "erFodsel",
+   private val requiredParams = listOf(
       "antallBarn",
       "morHarRett",
       "farHarRett",
-      "familiehendelsesdato",
       "dekningsgrad"
    )
 
    private val dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
 
    fun missingRequiredParams(paramsInRequest: List<String>): List<String> {
-      return reqiuredParams.filterNot { paramsInRequest.contains(it) }
+      return requiredParams.filterNot { paramsInRequest.contains(it) }
    }
 
    fun parseParams(req: HttpServletRequest): ParseResult {
       val errMsgs = mutableListOf<String>()
 
-      val erFødsel = req.getParameter("erFodsel").orEmpty().toBoolean()
       val morHarRett = req.getParameter("morHarRett").orEmpty().toBoolean()
       val farHarRett = req.getParameter("farHarRett").orEmpty().toBoolean()
 
@@ -37,15 +34,18 @@ object KontoParamParser {
       val antallBarn = int(req.getParameter("antallBarn"), errMsgs)
       val dekningsgrad = dekningsgrad(req.getParameter("dekningsgrad"), errMsgs)
 
-      val familiehendelsesdato = date(req.getParameter("familiehendelsesdato"), errMsgs)
+      val fødselsdato = date(req.getParameter("fødselsdato"), errMsgs)
+      val termindato = date(req.getParameter("termindato"), errMsgs)
+      val omsorgsovertakelseDato = date(req.getParameter("omsorgsovertakelseDato"), errMsgs)
       val startDatoUttak = req.getParameter("startdatoUttak")?.let {
          date(it, errMsgs)
       }
 
       return when (errMsgs.isEmpty()) {
          false -> ParseFailure(errMsgs)
-         true  -> ParseSuccess(CalculateKontoRequest(erFødsel = erFødsel, dekningsgrad = dekningsgrad!!,
-            familiehendelsesdato = familiehendelsesdato!!, startdatoUttak = startDatoUttak,
+         true  -> ParseSuccess(CalculateKontoRequest(dekningsgrad = dekningsgrad!!,
+            omsorgsovertakelseDato = omsorgsovertakelseDato!!, fødselsdato = fødselsdato!!,
+            termindato = termindato!!, startdatoUttak = startDatoUttak,
             farHarRett = farHarRett, morHarRett = morHarRett, antallBarn = antallBarn!!,
             farHarAleneomsorg = farHarAleneomsorg, morHarAleneomsorg = morHarAleneomsorg))
       }
