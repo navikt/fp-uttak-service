@@ -34,9 +34,15 @@ object KontoParamParser {
       val antallBarn = int(req.getParameter("antallBarn"), errMsgs)
       val dekningsgrad = dekningsgrad(req.getParameter("dekningsgrad"), errMsgs)
 
-      val fødselsdato = date(req.getParameter("fødselsdato"), errMsgs)
-      val termindato = date(req.getParameter("termindato"), errMsgs)
-      val omsorgsovertakelseDato = date(req.getParameter("omsorgsovertakelseDato"), errMsgs)
+      val fødselsdato = req.getParameter("fødselsdato")?.let {
+         date(it, errMsgs)
+      }
+      val termindato = req.getParameter("termindato")?.let {
+         date(it, errMsgs)
+      }
+      val omsorgsovertakelseDato = req.getParameter("omsorgsovertakelseDato")?.let {
+         date(it, errMsgs)
+      }
       val startDatoUttak = req.getParameter("startdatoUttak")?.let {
          date(it, errMsgs)
       }
@@ -44,8 +50,8 @@ object KontoParamParser {
       return when (errMsgs.isEmpty()) {
          false -> ParseFailure(errMsgs)
          true  -> ParseSuccess(CalculateKontoRequest(dekningsgrad = dekningsgrad!!,
-            omsorgsovertakelseDato = omsorgsovertakelseDato!!, fødselsdato = fødselsdato!!,
-            termindato = termindato!!, startdatoUttak = startDatoUttak,
+            omsorgsovertakelseDato = omsorgsovertakelseDato, fødselsdato = fødselsdato,
+            termindato = termindato, startdatoUttak = startDatoUttak,
             farHarRett = farHarRett, morHarRett = morHarRett, antallBarn = antallBarn!!,
             farHarAleneomsorg = farHarAleneomsorg, morHarAleneomsorg = morHarAleneomsorg))
       }
