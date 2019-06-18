@@ -38,6 +38,22 @@ node {
          System.setProperty("java.net.useSystemProxies", "true")
          System.setProperty("http.nonProxyHosts", "*.adeo.no")
 
+         try {
+            sh "./gradlew fatJar"
+            slackSend([
+               color: 'good',
+               message: "Build <${env.BUILD_URL}|#${env.BUILD_NUMBER}> (<${commitUrl}|${commitHashShort}>) of ${repo}/${application}@master by ${committer} passed"
+            ])
+         } catch (Exception ex) {
+            slackSend([
+               color: 'danger',
+               message: "Build <${env.BUILD_URL}|#${env.BUILD_NUMBER}> (<${commitUrl}|${commitHashShort}>) of ${repo}/${application}@master by ${committer} failed"
+            ])
+            echo '[FAILURE] Failed to build: ${ex}'
+            currentBuild.result = 'FAILURE'
+            return
+         }
+
          sh "docker build --build-arg app_name=${application} -t ${dockerRepo}/${application}:${releaseVersion} ."
          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'nexusUser', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
             sh "curl --fail -v -u ${env.USERNAME}:${env.PASSWORD} --upload-file ${appConfig} https://repo.adeo.no/repository/raw/${groupId}/${application}/${releaseVersion}/nais.yaml"
