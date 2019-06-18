@@ -25,7 +25,7 @@ object ComponentSpec : Spek({
 
          on("all valid params") {
             it("calculates quotas") {
-               val queryParams = "antallBarn=0&morHarRett=true&farHarRett=true&fodselsdato=20180620&dekningsgrad=100"
+               val queryParams = "antallBarn=0&morHarRett=true&farHarRett=true&fødselsdato=20180620&dekningsgrad=100"
                val response = khttp.get(url = url + "konto?$queryParams")
                response.statusCode `should equal` 200
             }
@@ -33,7 +33,7 @@ object ComponentSpec : Spek({
 
          on("invalid int params") {
             it("rejects the request") {
-               val queryParams = "antallBarn=X&morHarRett=true&farHarRett=true&fodselsdato=20180620&dekningsgrad=Y"
+               val queryParams = "antallBarn=X&morHarRett=true&farHarRett=true&fødselsdato=20180620&dekningsgrad=Y"
                val response = khttp.get(url = url + "konto?$queryParams")
                response.statusCode `should equal` 400
                response.text `should contain` "is not an integer"
@@ -42,7 +42,7 @@ object ComponentSpec : Spek({
 
          on("invalid date params") {
             it("rejects the request") {
-               val queryParams = "antallBarn=1&morHarRett=true&farHarRett=true&fodselsdato=20189920&dekningsgrad=100"
+               val queryParams = "antallBarn=1&morHarRett=true&farHarRett=true&fødselsdato=20189920&dekningsgrad=100"
                val response = khttp.get(url = url + "konto?$queryParams")
                response.statusCode `should equal` 400
                response.text `should contain` "is not a valid date"
@@ -51,7 +51,7 @@ object ComponentSpec : Spek({
 
          on("invalid dekningsgrad param") {
             it("rejects the request") {
-               val queryParams = "antallBarn=1&morHarRett=true&farHarRett=true&fodselsdato=20180620&dekningsgrad=90"
+               val queryParams = "antallBarn=1&morHarRett=true&farHarRett=true&fødselsdato=20180620&dekningsgrad=90"
                val response = khttp.get(url = url + "konto?$queryParams")
                response.statusCode `should equal` 400
                response.text `should contain` "dekningsgrad must be 80 or 100"
@@ -61,7 +61,7 @@ object ComponentSpec : Spek({
          on("aleneomsorg present") {
             it("rejects the request if both are present and true") {
                val queryParams = "antallBarn=1&morHarRett=true&farHarRett=true&" +
-                  "fodselsdato=20180620&dekningsgrad=90&morHarAleneomsorg=true&farHarAleneomsorg=true"
+                  "fødselsdato=20180620&dekningsgrad=90&morHarAleneomsorg=true&farHarAleneomsorg=true"
                val response = khttp.get(url = url + "konto?$queryParams")
                response.statusCode `should equal` 400
                response.text `should contain` "mutually exclusive"
@@ -69,7 +69,7 @@ object ComponentSpec : Spek({
 
             it("accepts the request if both are present but only one is true") {
                val queryParams = "antallBarn=1&morHarRett=true&farHarRett=true&" +
-                  "fodselsdato=20180620&dekningsgrad=100&morHarAleneomsorg=true&farHarAleneomsorg=false"
+                  "fødselsdato=20180620&dekningsgrad=100&morHarAleneomsorg=true&farHarAleneomsorg=false"
                val response = khttp.get(url = url + "konto?$queryParams")
                response.statusCode `should equal` 200
             }
