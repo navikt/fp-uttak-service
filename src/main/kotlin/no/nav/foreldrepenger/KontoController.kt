@@ -6,8 +6,7 @@ import no.nav.foreldrepenger.regler.uttak.konfig.*
 import no.nav.foreldrepenger.uttaksvilkår.*
 import java.time.*
 
-import no.nav.foreldrepenger.regler.uttak.konfig.StandardKonfigurasjon.SØKNADSDIALOG as OLD_LAW_CONFIG
-import no.nav.foreldrepenger.regler.uttak.konfig.StandardKonfigurasjon.KONFIGURASJON as NEW_LAW_CONFIG
+import no.nav.foreldrepenger.regler.uttak.konfig.StandardKonfigurasjon.SØKNADSDIALOG as LAW_CONFIG
 
 object KontoController {
 
@@ -33,8 +32,6 @@ object KontoController {
          Dekningsgrad.DEKNING_80 -> no.nav.foreldrepenger.regler.uttak.beregnkontoer.grunnlag.Dekningsgrad.DEKNINGSGRAD_80
       }
 
-      val config = chooseConfig(req.fødselsdato)
-
       val grunnlag = grunnlag {
          medFødselsdato(req.fødselsdato)
          medTermindato(req.termindato)
@@ -49,7 +46,7 @@ object KontoController {
       }
 
       return try {
-         KontoSuccess(kontoCalculator.beregnKontoer(grunnlag, config)
+         KontoSuccess(kontoCalculator.beregnKontoer(grunnlag, LAW_CONFIG)
             .stønadskontoer
             .map { it.key.toString() to it.value }.toMap()
          )
@@ -63,14 +60,4 @@ object KontoController {
       builder.actions()
       return builder.build()
    }
-
-   fun chooseConfig(significantDate: LocalDate?): Konfigurasjon {
-      return if (oldLawApplies(significantDate)) OLD_LAW_CONFIG else NEW_LAW_CONFIG
-   }
-
-   fun oldLawApplies(testDate: LocalDate?): Boolean {
-      val cutoff = LocalDate.of(2019, 1, 1)
-      return testDate!!.isBefore(cutoff)
-   }
-
 }
