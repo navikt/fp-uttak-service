@@ -2,16 +2,17 @@ val junitJupiterVersion = "5.4.2"
 val spekVersion = "1.2.1"
 val kluentVersion = "1.41"
 val khttpVersion = "0.1.0"
-val javalinVersion = "2.3.0"
+val javalinVersion = "3.0.0"
 val slf4jVersion = "1.7.25"
 val jacksonVersion = "2.9.7"
+val kotlinReflectVersion = "1.3.41"
 val ruleVersion = "1.2_20190617100715_4b6b7a4"
 
 val mainClass = "no.nav.foreldrepenger.AppKt"
 
 plugins {
    application
-   kotlin("jvm") version "1.2.71"
+   kotlin("jvm") version "1.3.41"
 }
 
 buildscript {
@@ -30,6 +31,7 @@ dependencies {
    compile("org.slf4j:slf4j-simple:$slf4jVersion")
    compile("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
    compile("no.nav.foreldrepenger:uttak-regler:$ruleVersion")
+   compile ("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
 
    testCompile("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
    testCompile("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
@@ -46,18 +48,17 @@ dependencies {
 }
 
 repositories {
-   mavenCentral()
    maven("https://repo.adeo.no/repository/maven-releases/")
    jcenter()
 }
 
 java {
-   sourceCompatibility = JavaVersion.VERSION_1_10
-   targetCompatibility = JavaVersion.VERSION_1_10
+   sourceCompatibility = JavaVersion.VERSION_HIGHER
+   targetCompatibility = JavaVersion.VERSION_HIGHER
 }
 
 tasks.withType<Wrapper> {
-   gradleVersion = "4.10.2"
+   gradleVersion = "5.5"
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
