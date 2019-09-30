@@ -18,7 +18,7 @@ jobs:
    build:
      executor: openjdk
      steps:
-       - checkout   
+       - checkout
        - env/set-env-var:
           var-name: RELEASE_VERSION
           var-value: $MAJOR_VERSION-$CIRCLE_BUILD_NUM-$(git rev-parse --short HEAD)
