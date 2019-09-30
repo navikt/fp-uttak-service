@@ -1,0 +1,4 @@
+{
+  "ingress": "https://fp-uttak-service.dev-nav.no",
+  "application_name": "fp-uttak-service"
+}
