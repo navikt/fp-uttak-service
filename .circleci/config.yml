@@ -42,19 +42,19 @@ jobs:
 
       - env/persist-env
  
- dev-deploy:
-    executor: go
-    steps:
-      - nais-deploy:
-          template-vars: dev.json
-          environment: dev-sbs
+dev-deploy:
+   executor: go
+   steps:
+     - nais-deploy:
+         template-vars: dev.json
+         environment: dev-sbs
 
-  prod-deploy:
-    executor: go
-    steps:
-      - nais-deploy:
-          template-vars: prod.json
-          environment: prod-sbs
+prod-deploy:
+   executor: go
+   steps:
+     - nais-deploy:
+         template-vars: prod.json
+         environment: prod-sbs
           
 workflows:
   version: 2
