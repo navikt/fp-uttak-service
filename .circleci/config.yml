@@ -54,7 +54,7 @@ jobs:
       -  nais-deploy:
             template-vars: dev.json
             environment: dev-sbs
-   dev-deploy:
+   dev-gcp-deploy:
      executor: go
      steps:
      -  nais-deploy:
