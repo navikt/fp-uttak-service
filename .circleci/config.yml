@@ -5,7 +5,7 @@ orbs:
    env: christeredvartsen/persist-env@0.0.4
 executors:
    openjdk:
-      working_directory: ~/foreldrepengesoknad-api
+      working_directory: ~/fp-uttak-service
       docker:
       -  image: circleci/openjdk:11-jdk
       environment:
