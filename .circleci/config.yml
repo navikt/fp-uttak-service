@@ -13,7 +13,7 @@ jobs:
       
        - run: 
            name: Bygge 
-           command: ./gradlew fatJar
+           command: ./gradlew -b build.gradle.kts fatJar
       
        - nais/docker-deploy:
           image: navikt/$CIRCLE_PROJECT_REPONAME	
