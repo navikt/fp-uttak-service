@@ -1,4 +1,4 @@
-val junitJupiterVersion = "5.4.2"
+val junitJupiterVersion = "5.5.2"
 val spekVersion = "1.2.1"
 val kluentVersion = "1.55"
 val khttpVersion = "1.0.0"
