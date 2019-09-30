@@ -20,7 +20,6 @@ jobs:
     executor: openjdk
     steps:
       - checkout
-
       - env/set-env-var:
           var-name: RELEASE_VERSION
           var-value: $MAJOR_VERSION-$CIRCLE_BUILD_NUM-$(git rev-parse --short HEAD)
@@ -41,7 +40,7 @@ jobs:
             image: $IMAGE
             tag: $RELEASE_VERSION
 
-       - env/persist-env
+      - env/persist-env
  
  dev-deploy:
     executor: go
