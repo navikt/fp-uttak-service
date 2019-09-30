@@ -1,8 +1,2 @@
-FROM navikt/java:12
-
-ARG app_name
-
-ENV LC_ALL="no_NB.UTF-8"
-ENV LANG="no_NB.UTF-8"
-ENV TZ="Europe/Oslo"
-COPY build/libs/$app_name-all.jar app.jar
+FROM navikt/java:11
+COPY build/libs/*.jar app.jar
