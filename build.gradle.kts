@@ -6,7 +6,7 @@ val javalinVersion = "3.0.0"
 val slf4jVersion = "1.7.25"
 val jacksonVersion = "2.9.7"
 val kotlinReflectVersion = "1.3.41"
-val ruleVersion = "1.2_20190812132059_13ae4f3"
+val ruleVersion = "1.2_20190923165252_44d68be"
 
 val mainClass = "no.nav.foreldrepenger.AppKt"
 
