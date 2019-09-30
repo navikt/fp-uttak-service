@@ -42,14 +42,14 @@ jobs:
 
       - env/persist-env
  
-dev-deploy:
+  dev-deploy:
    executor: go
    steps:
      - nais-deploy:
          template-vars: dev.json
          environment: dev-sbs
 
-prod-deploy:
+  prod-deploy:
    executor: go
    steps:
      - nais-deploy:
