@@ -6,14 +6,14 @@ orbs:
   
 executors:
   openjdk:
-    working_directory: ~/fp-uttak-service
-  docker:
+    working_directory: ~/foreldrepengesoknad-api
+    docker:
       - image: circleci/openjdk:11-jdk
-  environment:
+    environment:
       MAJOR_VERSION: 2   
   go:
-   docker:
-     - image: navikt/deployment-cli:v0.2.0  
+    docker:
+      - image: navikt/deployment-cli:v0.2.0   
 jobs:
    build:
      executor: openjdk
