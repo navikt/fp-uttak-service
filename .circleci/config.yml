@@ -7,9 +7,9 @@ orbs:
 executors:
   openjdk:
     working_directory: ~/fp-uttak-service
-   docker:
+  docker:
       - image: circleci/openjdk:11-jdk
-   environment:
+  environment:
       MAJOR_VERSION: 2   
   go:
    docker:
