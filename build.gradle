@@ -5,7 +5,7 @@ val khttpVersion = "1.0.0"
 val javalinVersion = "3.6.0"
 val slf4jVersion = "1.7.28"
 val jacksonVersion = "2.10.1"
-val kotlinReflectVersion = "1.3.50"
+val kotlinReflectVersion = "1.3.60"
 val ruleVersion = "1.2_20191105135515_686add1"
 
 val mainClass = "no.nav.foreldrepenger.AppKt"
