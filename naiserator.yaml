@@ -1,16 +1,16 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: {{application_name}}
+  name: fp-uttak-service
 {{#if namespace}}
   namespace: {{namespace}}
 {{else}}
   namespace: default
 {{/if}} 
   labels:
-    team: {{team}}
+    team: teamforeldrepenger
 spec:
-  image: {{version}}
+  image: {{image}}
   port: 8080
   replicas:
       min: 2
