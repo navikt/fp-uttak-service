@@ -1,4 +1,4 @@
-brew instapackage no.nav.foreldrepenger
+package no.nav.foreldrepenger
 
 import java.time.*
 import java.time.format.*
