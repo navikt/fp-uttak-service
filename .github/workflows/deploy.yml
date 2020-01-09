@@ -1,0 +1,42 @@
+name: Bygg og deploy ved push til master
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/fp-uttak-service
+
+jobs:
+   build:
+      name: Build and push Docker container
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v1
+        - uses: actions/cache@v1
+          with:
+            path: ~/.gradle/caches
+            key: ${{ runner.os }}-gradle-cache-${{ hashFiles('build.gradle.kts') }}
+            restore-keys: |
+              ${{ runner.os }}-gradle-cache-
+        - uses: actions/cache@v1
+          with:
+            path: ~/.gradle/wrapper
+            key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+            restore-keys: |
+              ${{ runner.os }}-gradle-wrapper-
+        - uses: actions/setup-java@v1
+          with:
+            java-version: 1.11
+        - name: test and build
+          run: ./gradlew -b build.gradle.kts fatJar
+
+        - name: Bygg, tag og push Docker image  
+          run: |
+           docker build --tag ${IMAGE} --tag ${IMAGE_BASE}:latest .
+           echo  ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
+           docker push ${IMAGE_BASE}   
