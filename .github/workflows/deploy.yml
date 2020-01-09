@@ -45,4 +45,36 @@ jobs:
           run: |
            docker build --tag ${IMAGE} --tag ${IMAGE_BASE}:latest .
            echo  ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
-           docker push ${IMAGE_BASE}   
+           docker push ${IMAGE_BASE}  
+       
+        - name: Tag release      
+          uses: maxkomarychev/oction-create-release@v0.7.1
+          id: release
+          with:
+            token: ${{ secrets.NOTIFICATION }}
+            tag_name: ${{ env.TAG }}
+  
+        - name: Opprett deployment issue
+          if: success()
+          uses: maxkomarychev/oction-create-issue@v0.7.1
+          id: createdeployissue
+          with:
+            token: ${{ secrets.NOTIFICATION }}
+            title: Deploy av ${{ env.TAG }}
+            labels: deployment
+            body: |
+            Kommenter med <b>/promote ${{ env.TAG }} cluster namespace</b>, hvor <b>cluster</b> er et gyldig clusternavn.
+            <table>
+            <tr><th>Cluster</th></tr>
+            <tr><td>dev-sbs</td></tr>
+            <tr><td>prod-sbs</td><</tr>
+            </table>
+            
+        - name: Trigg deploy til dev-sbs
+          if: success()
+          uses: peter-evans/create-or-update-comment@v1
+          with:
+            token: ${{ secrets.NOTIFICATION }}
+            issue-number: ${{ steps.createdeployissue.outputs.number }}
+            body: /promote ${{ env.TAG }} dev-sbs 
+            
