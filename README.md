@@ -13,8 +13,8 @@ Start no.nav.foreldrepenger.AppKt
 
 Spørsmål knyttet til koden eller prosjektet kan rettes til:
 
-* nav.team.bris@nav.no
+* teamforeldrepenger@nav.no
 
 ## For NAV-ansatte
 
-Interne henvendelser kan sendes via Slack i kanalen #bris.
+Interne henvendelser kan sendes via Slack i kanalen #teamforeldrepenger.
