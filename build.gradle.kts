@@ -6,8 +6,10 @@ val javalinVersion = "3.0.0"
 val slf4jVersion = "1.7.25"
 val jacksonVersion = "2.9.7"
 val kotlinReflectVersion = "1.3.41"
-val ruleVersion = "1.2_20190923165252_44d68be"
+val ruleVersion = "2.1-20200121124755-f51f7d3"
 
+val gprPassword: String by project
+val gprUser: String by project
 val mainClass = "no.nav.foreldrepenger.AppKt"
 
 plugins {
@@ -26,29 +28,36 @@ application {
 }
 
 dependencies {
-   compile(kotlin("stdlib"))
-   compile("io.javalin:javalin:$javalinVersion")
-   compile("org.slf4j:slf4j-simple:$slf4jVersion")
-   compile("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-   compile("no.nav.foreldrepenger:uttak-regler:$ruleVersion")
-   compile ("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
+   implementation(kotlin("stdlib"))
+   implementation("io.javalin:javalin:$javalinVersion")
+   implementation("org.slf4j:slf4j-simple:$slf4jVersion")
+   implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+   implementation("no.nav.foreldrepenger:uttak-regler:$ruleVersion")
+   implementation ("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
 
-   testCompile("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
-   testCompile("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
-   testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-   testCompile("org.amshove.kluent:kluent:$kluentVersion")
-   testCompile("khttp:khttp:$khttpVersion")
-   testCompile("org.jetbrains.spek:spek-api:$spekVersion") {
+   testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
+   testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+   testImplementation("org.amshove.kluent:kluent:$kluentVersion")
+   testImplementation("khttp:khttp:$khttpVersion")
+   testImplementation("org.jetbrains.spek:spek-api:$spekVersion") {
       exclude(group = "org.jetbrains.kotlin")
    }
-   testRuntime("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
+   testRuntimeOnly("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
       exclude(group = "org.junit.platform")
       exclude(group = "org.jetbrains.kotlin")
    }
 }
 
 repositories {
-   maven("https://repo.adeo.no/repository/maven-releases/")
+   maven {
+      name = "Github"
+      url = uri("https://maven.pkg.github.com/navikt/fp-uttak")
+      credentials {
+         username = "x-access-token"
+         password = System.getenv("GITHUB_TOKEN")
+      }
+   }
    jcenter()
 }
 
@@ -58,16 +67,16 @@ java {
 }
 
 tasks.withType<Wrapper> {
-   gradleVersion = "5.5"
+   gradleVersion = "6.0.1"
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
    baseName = "${project.name}-all"
    manifest {
       attributes["Implementation-Title"] = "Uttak service"
-      attributes["Main-Class"] = "$mainClass"
+      attributes["Main-Class"] = mainClass
    }
-   from(configurations.runtime.map({ if (it.isDirectory) it else zipTree(it) }))
+   from(configurations.runtime.get().map { if (it.isDirectory) it else zipTree(it) })
    with(tasks["jar"] as CopySpec)
 }
 

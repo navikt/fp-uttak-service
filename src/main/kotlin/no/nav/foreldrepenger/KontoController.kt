@@ -1,11 +1,9 @@
 package no.nav.foreldrepenger
 
 import io.javalin.http.Context
+import no.nav.foreldrepenger.regler.uttak.beregnkontoer.StønadskontoRegelOrkestrering
 import no.nav.foreldrepenger.regler.uttak.beregnkontoer.grunnlag.*
-import no.nav.foreldrepenger.regler.uttak.konfig.*
-import no.nav.foreldrepenger.uttaksvilkår.*
 import org.slf4j.LoggerFactory
-import java.time.*
 
 import no.nav.foreldrepenger.regler.uttak.konfig.StandardKonfigurasjon.SØKNADSDIALOG as LAW_CONFIG
 

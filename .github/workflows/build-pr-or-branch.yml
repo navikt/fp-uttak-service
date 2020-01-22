@@ -1,14 +1,14 @@
 name: Bygg branch eller PR
 
-on: 
+on:
   pull_request:
   push:
-    branches-ignore:   
-      - master   
+    branches-ignore:
+      - master
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
 jobs:
   kompiler:
     runs-on: ubuntu-latest
@@ -31,4 +31,4 @@ jobs:
             java-version: 1.11
 
         - name: test and build
-          run: ./gradlew -b build.gradle.kts fatJar 
+          run: ./gradlew -b build.gradle.kts fatJar
