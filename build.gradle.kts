@@ -76,7 +76,7 @@ val fatJar = task("fatJar", type = Jar::class) {
       attributes["Implementation-Title"] = "Uttak service"
       attributes["Main-Class"] = mainClass
    }
-   from(configurations.runtime.get().map { if (it.isDirectory) it else zipTree(it) })
+   from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
    with(tasks["jar"] as CopySpec)
 }
 
