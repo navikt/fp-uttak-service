@@ -1,4 +1,4 @@
 {
-  "ingress": "https://fp-uttak-service-q.nav.no",
+  "ingresses": ["https://fp-uttak-service-q.nav.no"],
   "application_name": "fp-uttak-service"
 }

@@ -1,4 +1,4 @@
 {
-  "namespace" : "foreldrepenger",
-  "ingress": "https://fp-uttak-service.nav.no"
+  "ingresses": ["https://fp-uttak-service.nav.no"],
+  "namespace" : "teamforeldrepenger"
 }
