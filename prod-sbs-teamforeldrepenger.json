@@ -1,3 +1,4 @@
 {
+  "namespace" : "teamforeldrepenger",
   "ingresses": ["https://fp-uttak-service.nav.no"]
 }

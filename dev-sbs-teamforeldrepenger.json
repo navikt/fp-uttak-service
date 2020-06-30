@@ -1,4 +1,4 @@
 {
-  "ingresses": ["https://fp-uttak-service-q.nav.no"],
-  "application_name": "fp-uttak-service"
+  "namespace" : "teamforeldrepenger",
+  "ingresses": ["https://fp-uttak-service-q.nav.no"]
 }
