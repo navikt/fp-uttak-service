@@ -1,6 +1,6 @@
 val junitJupiterVersion = "5.4.2"
 val spekVersion = "1.2.1"
-val kluentVersion = "1.41"
+val kluentVersion = "1.64"
 val khttpVersion = "0.1.0"
 val javalinVersion = "3.0.0"
 val slf4jVersion = "1.7.25"
