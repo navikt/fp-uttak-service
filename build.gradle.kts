@@ -4,7 +4,7 @@ val kluentVersion = "1.64"
 val khttpVersion = "0.1.0"
 val javalinVersion = "3.0.0"
 val slf4jVersion = "1.7.30"
-val jacksonVersion = "2.9.7"
+val jacksonVersion = "2.12.1"
 val kotlinReflectVersion = "1.3.41"
 val ruleVersion = "2.1-20200121124755-f51f7d3"
 
